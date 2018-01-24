@@ -40,7 +40,6 @@ int main(int argc, char** argv) {
         cl::CommandQueue queue = cl::CommandQueue( context, devices[device_id]);
 
         // Create the memory buffers.
-        cl::Buffer bufferDim = cl::Buffer(context, CL_MEM_READ_ONLY, sizeof(int));
         cl::Buffer bufferA = cl::Buffer(context, CL_MEM_READ_ONLY, MAT_SIZE * sizeof(int));
         cl::Buffer bufferB = cl::Buffer(context, CL_MEM_READ_ONLY, MAT_SIZE * sizeof(int));
         cl::Buffer bufferC = cl::Buffer(context, CL_MEM_WRITE_ONLY, MAT_SIZE * sizeof(int));
@@ -66,7 +65,7 @@ int main(int argc, char** argv) {
         cl::Kernel matmul_kernel(program, "matmul");
 
         // Set the kernel arguments
-        matmul_kernel.setArg(0, bufferDim);
+        matmul_kernel.setArg(0, MAT_DIM);
         matmul_kernel.setArg(1, bufferA);
         matmul_kernel.setArg(2, bufferB);
         matmul_kernel.setArg(3, bufferC);
@@ -82,7 +81,7 @@ int main(int argc, char** argv) {
         // Verify the result.
         for (int i=0; i<MAT_DIM; i++) {
             for (int j=0; j<MAT_DIM; j++) {
-                std::cout << C[dim*i+j] << std::endl;
+                std::cout << C[MAT_DIM *i+j] << " "; 
             }
             std::cout << "\n";
         }
